@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./s.css">
+</head>
+<body>
+
+    <div class="container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+          <defs>
+            <filter
+              id="bloom-filter"
+              width="200%"
+              height="200%"
+              x="-50%"
+              y="-50%"
+            >
+              <feComponentTransfer result="amplified">
+                <feFuncR type="linear" slope="0.7" intercept="0"></feFuncR>
+                <feFuncG type="linear" slope="0.7" intercept="0"></feFuncG>
+                <feFuncB type="linear" slope="0.7" intercept="0"></feFuncB>
+              </feComponentTransfer>
+              <feColorMatrix in="amplified" type="saturate" values="0" result="desaturated"></feColorMatrix>
+              <feComponentTransfer in="desaturated" result="thresholded">
+                <feFuncR type="table" tableValues="0,1"></feFuncR>
+                <feFuncG type="table" tableValues="0,1"></feFuncG>
+                <feFuncB type="table" tableValues="0,1"></feFuncB>
+              </feComponentTransfer>
+              <feColorMatrix
+                in="thresholded"
+                type="matrix"
+                values="1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        1 0 0 0 0"
+                result="alphaMask"
+              ></feColorMatrix>
+              <feComposite
+                in="SourceGraphic"
+                in2="alphaMask"
+                operator="arithmetic"
+                k1="1"
+                k2="0"
+                k3="0"
+                k4="0"
+                result="maskedSource"
+              ></feComposite>
+              <feComponentTransfer in="maskedSource" result="brightened">
+                <feFuncR type="linear" slope="1"></feFuncR>
+                <feFuncG type="linear" slope="1"></feFuncG>
+                <feFuncB type="linear" slope="1"></feFuncB>
+              </feComponentTransfer>
+              <feGaussianBlur
+                in="brightened"
+                stdDeviation="10"
+                edgeMode="none"
+                result="blurredBloom"
+              ></feGaussianBlur>
+              <feGaussianBlur
+                in="brightened"
+                stdDeviation="4"
+                edgeMode="none"
+                result="blurredBloom2"
+              ></feGaussianBlur>
+              <feComposite
+                in="SourceGraphic"
+                in2="blurredBloom"
+                operator="arithmetic"
+                k1="0"
+                k2="1"
+                k3="1"
+                k4="0"
+                result="finalBloom"
+              ></feComposite>
+              <feComposite
+                in="finalBloom"
+                in2="blurredBloom2"
+                operator="arithmetic"
+                k1="0"
+                k2="1"
+                k3="1"
+                k4="0"
+              ></feComposite>
+            </filter>
+          </defs>
+        </svg>
+        <textarea
+          id="textInput"
+          class="textarea"
+          rows="4"
+          placeholder="Type something here..."
+        ></textarea>
+        <div id="textDisplay" class="text-display"></div>
+      </div>
+       <script src="./script.js"></script>
+</body>
+</html>
