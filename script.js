@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     textInput.addEventListener('input', () => {
       const newText = textInput.value;
-  
+  // длвоырлдо
       let i = 0;
       while (
         i < currentText.length &&
